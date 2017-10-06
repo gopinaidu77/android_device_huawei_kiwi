@@ -137,6 +137,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
    KiwiDoze
 
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+
 # Filesystem
 PRODUCT_PACKAGES += \
     e2fsck \
