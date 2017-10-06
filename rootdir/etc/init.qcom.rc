@@ -265,7 +265,7 @@ service irsc_util /system/bin/irsc_util "/etc/sec_config"
 service rmt_storage /system/bin/rmt_storage
     class core
     user root
-    group wakelock
+	group system wakelock
     seclabel u:r:rmt_storage:s0
 
 service config_bluetooth /system/bin/sh /system/etc/init.qcom.bt.sh "onboot"
