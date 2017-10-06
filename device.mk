@@ -256,6 +256,10 @@ PRODUCT_PACKAGES += \
     wcnss_service \
     libwpa_client
 
+# Vibrator
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl
+
 # WiFi HAL
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service
