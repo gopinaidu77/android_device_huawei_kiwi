@@ -85,8 +85,10 @@ PRODUCT_PACKAGES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    init.qcom.bt.sh
-
+    init.qcom.bt.sh \
+    libbt-vendor \
+    android.hardware.bluetooth@1.0-impl	
+	      
 # Camera
 PRODUCT_PACKAGES += \
     camera.msm8916 \
