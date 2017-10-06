@@ -32,11 +32,11 @@
 #include <fstream>
 #include <string>
 
-#include "vendor_init.h"
+#include <android-base/properties.h>
 #include "property_service.h"
-#include "log.h"
-#include "util.h"
 
+using android::base::GetProperty;
+using android::base::SetProperty;
 using namespace std;
 
 typedef struct {
@@ -167,7 +167,7 @@ static match_t matches[] = {
 
 static const int n_matches = sizeof(matches) / sizeof(matches[0]);
 
-static void property_set(const char *key, string value)
+static void SetProperty(const char *key, string value)
 {
     property_override(key, value.c_str());
 }
@@ -184,7 +184,7 @@ void vendor_load_properties()
     string hwsim;
     match_t *match;
 
-    platform = property_get("ro.board.platform");
+    platform = GetProperty("ro.board.platform", "");
     if (platform != ANDROID_TARGET)
         return;
 
@@ -198,29 +198,24 @@ void vendor_load_properties()
     for (match = matches; match - matches < n_matches && !contains(model, match->model); match++) {
     }
 
-    if (!match) {
-        WARNING("Unknown variant: %s", model.c_str());
-        return;
-    }
-
-    property_set("ro.build.product", "kiwi");
-    property_set("ro.product.device", "kiwi");
-    property_set("ro.product.model", match->model);
-    property_set("ro.build.description", match->description);
-    property_set("ro.build.fingerprint", match->fingerprint);
+    SetProperty("ro.build.product", "kiwi");
+    SetProperty("ro.product.device", "kiwi");
+    SetProperty("ro.product.model", match->model);
+    SetProperty("ro.build.description", match->description);
+    SetProperty("ro.build.fingerprint", match->fingerprint);
     if (match->is_cdma) {
-        property_set("telephony.lteOnCdmaDevice", "1");
+        SetProperty("telephony.lteOnCdmaDevice", "1");
     }
 
     // Fix single sim variant based on property set by the bootloader
-    hwsim = property_get("ro.boot.hwsim");
+    hwsim = GetProperty("ro.boot.hwsim", "");
 
     if (hwsim == "single") {
-        property_set("ro.telephony.default_network", match->default_network);
+        SetProperty("ro.telephony.default_network", match->default_network);
     } else {
-        property_set("persist.radio.multisim.config", "dsds");
-        property_set("ro.telephony.ril.config", "simactivation,sim2gsmonly");
-        property_set("ro.telephony.default_network", match->default_network + "," +
+        SetProperty("persist.radio.multisim.config", "dsds");
+        SetProperty("ro.telephony.ril.config", "simactivation,sim2gsmonly");
+        SetProperty("ro.telephony.default_network", match->default_network + "," +
                 match->default_network);
     }
 }
