@@ -381,7 +381,7 @@ service ril-daemon3 /system/bin/rild -c 3
 
 service charger /charger -h
     class charger
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
 
 on ffbm
     trigger early-fs
